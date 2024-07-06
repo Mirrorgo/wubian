@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 
-@Controller('v1/artist')
+@Controller('artist')
 export class ArtistController {
   constructor(private artistService: ArtistService) {}
   @Post('list')
