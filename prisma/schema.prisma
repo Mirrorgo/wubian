@@ -4,6 +4,13 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// list对应artist或者album或者playlist的id
+enum ListType {
+  ARTIST
+  ALBUM
+  PLAYLIST
+}
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,26 +21,70 @@ datasource db {
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
-  name   String
-  email  String  @unique
-  posts  Post[]
-  audios Audio[]
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  // playlists Playlist[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  library List[]
 }
 
-model Post {
-  id       Int     @id @default(autoincrement())
-  title    String
-  content  String?
-  authorId Int
-  author   User    @relation(fields: [authorId], references: [id])
+// list对应artist或者album或者playlist的id
+model List {
+  id        Int      @id @default(autoincrement())
+  type      ListType // artist, album, playlist
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id])
 }
 
-// 我需要的
-model Audio {
-  id       Int    @id @default(autoincrement())
-  title    String
-  url      String
-  authorId Int
-  author   User   @relation(fields: [authorId], references: [id])
+model Song {
+  id        Int      @id @default(autoincrement())
+  title     String
+  duration  Int // duration in seconds
+  url       String
+  artistId  Int
+  albumId   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  artist    Artist     @relation(fields: [artistId], references: [id])
+  album     Album?     @relation(fields: [albumId], references: [id])
+  playlists Playlist[] @relation("PlaylistSong") // 隐式处理多对多的关系
 }
+
+// 歌手
+model Artist {
+  id        Int      @id @default(autoincrement())
+  name      String
+  songs     Song[]
+  albums    Album[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 专辑
+model Album {
+  id        Int      @id @default(autoincrement())
+  title     String
+  artistId  Int
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  songs     Song[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 歌单
+model Playlist {
+  id        Int      @id @default(autoincrement())
+  title     String
+  songs     Song[]   @relation("PlaylistSong")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 筛选集（保存的筛选条件）
