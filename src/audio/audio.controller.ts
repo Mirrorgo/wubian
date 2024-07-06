@@ -1,12 +1,4 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
-import { Response } from 'express';
-import { join } from 'path';
+import { Controller } from '@nestjs/common';
 
 @Controller('audio')
-export class AudioController {
-  @Get(':filename')
-  getAudio(@Param('filename') filename: string, @Res() res: Response) {
-    const filePath = join(__dirname, '..', 'public', filename);
-    res.sendFile(filePath);
-  }
-}
+export class AudioController {}

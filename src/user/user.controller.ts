@@ -1,0 +1,19 @@
+import { Controller, Get, Post } from '@nestjs/common';
+import { UserService } from './user.service';
+
+@Controller('users')
+export class UserController {
+  constructor(private userService: UserService) {}
+
+  @Get()
+  async getUsers() {
+    return this.userService.getAllUsers();
+  }
+  @Post()
+  async insertUser() {
+    return this.userService.insertUser({
+      name: 'John Doe',
+      email: '123456@gmail.com',
+    });
+  }
+}
