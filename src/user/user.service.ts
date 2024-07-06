@@ -8,9 +8,9 @@ export class UserService {
   async getAllUsers() {
     return this.prisma.user.findMany();
   }
-  async insertUser(data: { name: string; email: string }) {
-    return this.prisma.user.create({
-      data,
-    });
-  }
+  // async insertUser(data: { name: string; email: string }) {
+  //   return this.prisma.user.create({
+  //     data,
+  //   });
+  // }
 }

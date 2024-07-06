@@ -33,7 +33,7 @@ model Song {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  artist    Artist     @relation(fields: [artistId], references: [id])
+  artist    Artist[]   @relation("SongArtist")
   album     Album?     @relation(fields: [albumId], references: [id])
   playlists Playlist[] @relation("PlaylistSong") // 隐式处理多对多的关系
 }
@@ -42,7 +42,7 @@ model Song {
 model Artist {
   id        Int      @id @default(autoincrement())
   name      String
-  songs     Song[]
+  songs     Song[]   @relation("SongArtist")
   albums    Album[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

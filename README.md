@@ -2,6 +2,10 @@
 
 
 
+nest g service 
+nest g controller
+
+
 
 {server-name}/public/index.html 来测试服务是否可用
 
