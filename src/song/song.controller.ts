@@ -15,7 +15,6 @@ import { SongService } from './song.service';
 export class SongController {
   constructor(private songService: SongService) {}
   @Post('list')
-  // @HttpCode(200)
   async getSongs() {
     return this.songService.getAllSongs();
   }

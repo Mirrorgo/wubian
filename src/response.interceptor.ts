@@ -14,12 +14,20 @@ export class ResponseInterceptor implements NestInterceptor {
     const response = context.switchToHttp().getResponse<Response>();
 
     return next.handle().pipe(
-      map((data) => ({
-        success: true,
-        code: 0,
-        msg: 'success',
-        data: data,
-      })),
+      map((data) => {
+        if (
+          context.switchToHttp().getRequest().method === 'POST' &&
+          response.statusCode === 201
+        ) {
+          response.status(200);
+        }
+        return {
+          success: true,
+          code: 0,
+          msg: 'success',
+          data: data,
+        };
+      }),
       catchError((err) => {
         const status = err.getStatus ? err.getStatus() : 500;
         const message = err.message || 'Internal server error';
