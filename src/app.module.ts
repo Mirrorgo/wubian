@@ -12,6 +12,8 @@ import { PlaylistService } from './playlist/playlist.service';
 import { AlbumService } from './album/album.service';
 import { ArtistService } from './artist/artist.service';
 import { SongService } from './song/song.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './response.interceptor';
 
 @Module({
   imports: [PrismaModule],
@@ -30,6 +32,10 @@ import { SongService } from './song/song.service';
     AlbumService,
     ArtistService,
     SongService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
+    },
   ],
 })
 export class AppModule {}

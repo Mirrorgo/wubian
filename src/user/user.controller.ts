@@ -9,11 +9,4 @@ export class UserController {
   async getUsers() {
     return this.userService.getAllUsers();
   }
-  // @Post()
-  // async insertUser() {
-  //   return this.userService.insertUser({
-  //     name: 'John Doe',
-  //     email: '123456@gmail.com',
-  //   });
-  // }
 }
