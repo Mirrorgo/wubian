@@ -1,4 +1,30 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { PlaylistService } from './playlist.service';
 
-@Controller('playlist')
-export class PlaylistController {}
+@Controller({
+  path: 'playlist',
+  version: '1',
+})
+export class PlaylistController {
+  constructor(private playlistService: PlaylistService) {}
+  @Post('list')
+  async getPlaylists() {
+    return this.playlistService.getAllPlaylists();
+  }
+
+  @Post('add')
+  async createPlaylist(@Body() data: { title: string; userId: number }) {
+    return this.playlistService.createPlaylist(data);
+  }
+
+  @Post('update-name')
+  async updatePlaylistName(
+    @Body()
+    data: {
+      playlistId: number;
+      title?: string;
+    },
+  ) {
+    return this.playlistService.updatePlaylistName(data);
+  }
+}
