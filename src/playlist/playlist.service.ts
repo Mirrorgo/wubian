@@ -24,4 +24,41 @@ export class PlaylistService {
       },
     });
   }
+
+  async addSongToPlaylist(data: { playlistId: number; songId: number }) {
+    // Check if playlist exists
+    const playlistExists = await this.prisma.playlist.findUnique({
+      where: {
+        id: data.playlistId,
+      },
+    });
+
+    if (!playlistExists) {
+      throw new BadRequestException('Playlist does not exist');
+    }
+
+    // Check if song exists
+    const songExists = await this.prisma.song.findUnique({
+      where: {
+        id: data.songId,
+      },
+    });
+
+    if (!songExists) {
+      throw new BadRequestException('Song does not exist');
+    }
+
+    return this.prisma.playlist.update({
+      where: {
+        id: data.playlistId,
+      },
+      data: {
+        songs: {
+          connect: {
+            id: data.songId,
+          },
+        },
+      },
+    });
+  }
 }

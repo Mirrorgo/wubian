@@ -18,7 +18,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  playlists Playlist[] @relation("UserPlaylist")
+  playlists Playlist[]
   artists   Artist[]   @relation("UserArtist")
   albums    Album[]    @relation("UserAlbum")
 }
@@ -66,9 +66,9 @@ model Album {
 model Playlist {
   id        Int      @id @default(autoincrement())
   title     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   songs     Song[]   @relation("PlaylistSong")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  users User[] @relation("UserPlaylist")
 }

@@ -27,4 +27,15 @@ export class PlaylistController {
   ) {
     return this.playlistService.updatePlaylistName(data);
   }
+
+  @Post('add-song')
+  async addSongToPlaylist(
+    @Body()
+    data: {
+      playlistId: number;
+      songId: number;
+    },
+  ) {
+    return this.playlistService.addSongToPlaylist(data);
+  }
 }

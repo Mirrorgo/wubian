@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -24,6 +28,15 @@ export class AlbumService {
   }
 
   async updateAlbum(data: { albumId: number; title?: string }) {
+    const album = await this.prisma.album.findUnique({
+      where: { id: data.albumId },
+    });
+
+    if (!album) {
+      // 如果专辑不存在，抛出异常
+      throw new NotFoundException(`Album with ID ${data.albumId} not found`);
+    }
+
     return this.prisma.album.update({
       where: {
         id: data.albumId,

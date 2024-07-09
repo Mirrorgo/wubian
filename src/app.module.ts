@@ -14,9 +14,10 @@ import { ArtistService } from './artist/artist.service';
 import { SongService } from './song/song.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './response.interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AuthModule],
   controllers: [
     AppController,
     UserController,
