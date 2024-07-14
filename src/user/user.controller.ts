@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CurrentUser } from 'src/utils/current-user.decorator';
@@ -12,7 +19,11 @@ export class UserController {
 
   @Post('list')
   @UseGuards(JwtAuthGuard)
-  async getUsers() {
+  async getUsers(@Request() req) {
+    // async getUsers(@CurrentUser() user) {
+    const userId = req.user.id; // 从 JWT 中提取的 userID
+    console.log('UserID:', userId); // 这行仅用于调试
+    // console.log('UserID:', user); // 这行仅用于调试
     return this.userService.getAllUsers();
   }
 
@@ -29,7 +40,7 @@ export class UserController {
   }
 
   @Post('get')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async getUserById(@CurrentUser() user) {
     return this.userService.getUserById(user.id);
   }
