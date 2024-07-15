@@ -68,8 +68,8 @@ export class SongService {
     });
   }
   async downloadSong(url: string, filename: string): Promise<string> {
-    const mp3Path = `public/music/${filename}.mp3`;
-    const webmPath = `public/music/${filename}.webm`;
+    const mp3Path = `public/server/music/${filename}.mp3`;
+    const webmPath = `public/server/music/${filename}.webm`;
 
     // Step 1: Download the audio as MP3
     const downloadCommand = `yt-dlp -f bestaudio --extract-audio --audio-format mp3 -o "${mp3Path}" ${url}`;

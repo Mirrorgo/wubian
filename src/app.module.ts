@@ -15,9 +15,16 @@ import { SongService } from './song/song.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './response.interceptor';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true, // 使 ConfigModule 在整个应用中可用
+    }),
+  ],
   controllers: [
     AppController,
     UserController,
