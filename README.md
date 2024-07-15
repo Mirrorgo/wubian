@@ -1,5 +1,8 @@
 > pnpm run pm2-start
 
+> 服务器上的下载操作
+- 
+
 
 
 nest g service 

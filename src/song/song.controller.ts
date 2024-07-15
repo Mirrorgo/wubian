@@ -36,4 +36,24 @@ export class SongController {
   ) {
     return this.songService.updateSong(data);
   }
+
+  @Post('delete')
+  async deleteSong(@Body('songId') songId: number) {
+    try {
+      return this.songService.deleteSong(songId);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Song does not exist',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Post('download')
+  async downloadSong(@Body() data: { url: string; filename: string }) {
+    return this.songService.downloadSong(data.url, data.filename);
+  }
 }
