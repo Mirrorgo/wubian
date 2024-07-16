@@ -14,14 +14,6 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
   });
-  const configService = app.get(ConfigService);
-  const jwtSecret = configService.get<string>('JWT_SECRET');
-  if (!jwtSecret) {
-    throw new Error('JWT_SECRET is not defined in the environment');
-  }
-
-  console.log('JWT_SECRET is properly loaded', jwtSecret);
-
   await app.listen(30270);
 }
 bootstrap();
