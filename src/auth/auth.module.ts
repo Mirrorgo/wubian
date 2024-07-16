@@ -7,11 +7,13 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthService } from './auth.service';
 import { env } from 'process';
 import { AuthController } from './auth.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     PrismaModule,
     PassportModule,
+    ConfigModule, // 确保导入 ConfigModule
     JwtModule.register({
       secret: env.JWT_SECRET,
       signOptions: { expiresIn: '60m' },
