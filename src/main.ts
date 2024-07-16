@@ -20,7 +20,7 @@ async function bootstrap() {
     throw new Error('JWT_SECRET is not defined in the environment');
   }
 
-  console.log('JWT_SECRET is properly loaded');
+  console.log('JWT_SECRET is properly loaded', jwtSecret);
 
   await app.listen(30270);
 }
