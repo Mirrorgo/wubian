@@ -10,8 +10,8 @@ export class ArtistController {
   constructor(private artistService: ArtistService) {}
   @Post('list')
   // @Version('2')
-  async getArtists() {
-    return this.artistService.getAllArtists();
+  async getArtists(@Body() body: { option?: 'name' }) {
+    return this.artistService.getAllArtists(body);
   }
 
   @Post('get')

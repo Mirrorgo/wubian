@@ -1,7 +1,9 @@
 > pnpm run pm2-start
 
 > 服务器上的下载操作
-- 
+
+
+> 服务器后端支持正常https,而不是只有nginx
 
 
 
