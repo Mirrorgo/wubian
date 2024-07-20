@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,6 +18,8 @@ model User {
   playlists Playlist[]
   artists   Artist[]   @relation("UserArtist")
   albums    Album[]    @relation("UserAlbum")
+
+  currentList CurrentList?
 }
 
 model Song {
@@ -32,9 +31,10 @@ model Song {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  artist    Artist[]   @relation("SongArtist")
-  album     Album?     @relation(fields: [albumId], references: [id])
-  playlists Playlist[] @relation("PlaylistSong") // 隐式处理多对多的关系
+  artist      Artist[]      @relation("SongArtist")
+  album       Album?        @relation(fields: [albumId], references: [id])
+  playlists   Playlist[]    @relation("PlaylistSong") // 隐式处理多对多的关系
+  CurrentList CurrentList[] @relation("CurrentListSong")
 }
 
 // 歌手
@@ -71,4 +71,14 @@ model Playlist {
   songs     Song[]   @relation("PlaylistSong")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CurrentList {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  song      Song[]   @relation("CurrentListSong")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }

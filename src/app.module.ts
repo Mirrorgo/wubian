@@ -16,6 +16,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './response.interceptor';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { CurrentlistService } from './current-list/current-list.service';
+import { CurrentlistController } from './current-list/current-list.controller';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { ConfigModule } from '@nestjs/config';
     ArtistController,
     AlbumController,
     PlaylistController,
+    CurrentlistController,
   ],
   providers: [
     AppService,
@@ -44,6 +47,7 @@ import { ConfigModule } from '@nestjs/config';
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
     },
+    CurrentlistService,
   ],
 })
 export class AppModule {}
