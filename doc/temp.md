@@ -11,7 +11,10 @@ nest g service
 nest g controller
 
 
-
 {server-name}/public/index.html 来测试服务是否可用
 
 {server-name}/public/music/{music-id}
+
+
+TODO
+- 四个最近播放列表， 可以随时切换过去到那个播放列表

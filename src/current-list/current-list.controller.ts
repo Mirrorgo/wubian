@@ -28,8 +28,8 @@ export class CurrentlistController {
     });
   }
 
-  @Post('empty')
-  async emptyCurrentListByUserId(@CurrentUser() user) {
-    return this.currentListService.emptyCurrentListByUserId(user.id);
-  }
+  // @Post('empty')
+  // async emptyCurrentListByUserId(@CurrentUser() user) {
+  //   return this.currentListService.emptyCurrentListByUserId(user.id);
+  // }
 }
