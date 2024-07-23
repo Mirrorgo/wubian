@@ -5,46 +5,46 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class CurrentlistService {
   constructor(private prisma: PrismaService) {}
 
-  async getCurrentListByUserId(userId: number) {
-    const currentList = await this.prisma.currentList.findUnique({
-      where: {
-        userId: userId,
-      },
-      include: {
-        songs: {
-          include: {
-            song: true, // This includes the Song details for each CurrentListSong
-          },
-          orderBy: {
-            order: 'asc', // Order the songs by their order in the list
-          },
-        },
-      },
-    });
+  // async getCurrentListByUserId(userId: number) {
+  //   const currentList = await this.prisma.currentList.findUnique({
+  //     where: {
+  //       userId: userId,
+  //     },
+  //     include: {
+  //       songs: {
+  //         include: {
+  //           song: true, // This includes the Song details for each CurrentListSong
+  //         },
+  //         orderBy: {
+  //           order: 'asc', // Order the songs by their order in the list
+  //         },
+  //       },
+  //     },
+  //   });
 
-    if (!currentList) {
-      return null; // Or you could return a default structure if preferred
-    }
+  //   if (!currentList) {
+  //     return null; // Or you could return a default structure if preferred
+  //   }
 
-    // Transform the data to match the desired output structure
-    return {
-      id: currentList.id,
-      userId: currentList.userId,
-      currentPlayingSongId: currentList.currentPlayingSongId,
-      songs: currentList.songs.map((listSong) => ({
-        id: listSong.song.id,
-        title: listSong.song.title,
-        url: listSong.song.url,
-        artistId: listSong.song.artistId,
-        albumId: listSong.song.albumId,
-        createdAt: listSong.song.createdAt,
-        updatedAt: listSong.song.updatedAt,
-        order: listSong.order,
-      })),
-      createdAt: currentList.createdAt,
-      updatedAt: currentList.updatedAt,
-    };
-  }
+  //   // Transform the data to match the desired output structure
+  //   return {
+  //     id: currentList.id,
+  //     userId: currentList.userId,
+  //     currentPlayingSongId: currentList.currentPlayingSongId,
+  //     songs: currentList.songs.map((listSong) => ({
+  //       id: listSong.song.id,
+  //       title: listSong.song.title,
+  //       url: listSong.song.url,
+  //       artistId: listSong.song.artistId,
+  //       albumId: listSong.song.albumId,
+  //       createdAt: listSong.song.createdAt,
+  //       updatedAt: listSong.song.updatedAt,
+  //       order: listSong.order,
+  //     })),
+  //     createdAt: currentList.createdAt,
+  //     updatedAt: currentList.updatedAt,
+  //   };
+  // }
 
   async addSongToCurrentList(data: { userId: number; songId: number }) {
     return this.prisma.$transaction(async (prisma) => {

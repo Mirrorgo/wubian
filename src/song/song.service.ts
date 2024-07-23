@@ -13,7 +13,36 @@ export class SongService {
   constructor(private prisma: PrismaService) {}
 
   async getAllSongs() {
-    return this.prisma.song.findMany();
+    // return this.prisma.song.findMany();
+    // resturn songs and corresponding artist according to artistId in song
+    return this.prisma.song.findMany({
+      include: {
+        artist: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        album: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
+
+    // const allSongs = await this.prisma.song.findMany({
+    //   include: {
+    //     artist: true,
+    //   },
+    // });
+    // return allSongs;
+    // return allSongs.map((song) => ({
+    //   id: song.id,
+    //   title: song.title,
+    //   artist: song.artist,
+    //   url: song.url,
+    // }));
   }
 
   async getSongById(id: number) {
@@ -33,29 +62,58 @@ export class SongService {
   async updateSong(data: {
     songId: number;
     title?: string;
-    artistId?: number;
     url?: string;
+    artistIds?: number[];
   }) {
-    if (data.artistId) {
-      // Check if artistId exists
-      const artistExists = await this.prisma.artist.findUnique({
+    // Check if the song exists
+    const song = await this.prisma.song.findUnique({
+      where: {
+        id: data.songId,
+      },
+    });
+
+    if (!song) {
+      throw new Error(`Song with ID ${data.songId} not found.`);
+    }
+
+    if (data.artistIds) {
+      // Check if all artistIds exist
+      const existingArtists = await this.prisma.artist.findMany({
         where: {
-          id: data.artistId,
+          id: {
+            in: data.artistIds,
+          },
+        },
+        select: {
+          id: true,
         },
       });
 
-      if (!artistExists) {
-        throw new BadRequestException('Artist does not exist');
+      const existingArtistIds = existingArtists.map((artist) => artist.id);
+      const missingArtistIds = data.artistIds.filter(
+        (id) => !existingArtistIds.includes(id),
+      );
+
+      if (missingArtistIds.length > 0) {
+        throw new Error(`Artist IDs not found: ${missingArtistIds.join(', ')}`);
       }
     }
+
+    // Proceed with the update
     return this.prisma.song.update({
       where: {
         id: data.songId,
       },
       data: {
         title: data.title,
-        artistId: data.artistId,
         url: data.url,
+        artist: data.artistIds
+          ? {
+              set: data.artistIds.map((artistId) => ({
+                id: artistId,
+              })),
+            }
+          : undefined,
       },
     });
   }

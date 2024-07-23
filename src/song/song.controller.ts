@@ -30,7 +30,7 @@ export class SongController {
     data: {
       songId: number;
       title?: string;
-      artistId?: number;
+      artistIds?: number[];
       url?: string;
     },
   ) {

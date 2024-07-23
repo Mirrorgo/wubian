@@ -10,11 +10,11 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 export class CurrentlistController {
   constructor(private currentListService: CurrentlistService) {}
-  @Post('get')
-  async getCurrentListByUserId(@CurrentUser() user) {
-    // console.log(user, 'user!!!');
-    return this.currentListService.getCurrentListByUserId(user.id);
-  }
+  // @Post('get')
+  // async getCurrentListByUserId(@CurrentUser() user) {
+  //   // console.log(user, 'user!!!');
+  //   return this.currentListService.getCurrentListByUserId(user.id);
+  // }
 
   @Post('add-song')
   // 可以连续添加同一首歌到末尾的位置，
